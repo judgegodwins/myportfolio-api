@@ -7,6 +7,8 @@ app.use(bodyParser.json());
 
 app.post('/new_message', (req, res) => {
     console.log(req.body);
+    console.log('posting...');
+    res.send('done');
 })
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
