@@ -7,14 +7,15 @@ var cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
 
-var whitelist = ['https://judgegodwins.github.io', 'https://judgeportfolio.herokuapp.com', 'http://localhost:5000'];
+var whitelist = [
+    'https://judgegodwins.github.io', 
+    'https://judgeportfolio.herokuapp.com', 
+    'http://127.0.0.1:5500'
+];
 
 if(process.env.NODE_ENV === 'development') {
     whitelist.push('localhost');
 }
-
-console.log(process.env.NODE_ENV)
-console.log(whitelist)
 
 var corsOptions = {
     
