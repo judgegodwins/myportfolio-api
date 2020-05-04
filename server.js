@@ -3,36 +3,40 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
+var MessageModel = require('./Message');
+var router = require('./router');
+
+mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true}, (err, db) => {
+    if(!err) console.log('connected');
+    router(app, MessageModel);
+});
 
 var whitelist = [
     'https://judgegodwins.github.io', 
     'https://judgeportfolio.herokuapp.com', 
-    'http://127.0.0.1:5500'
+    'http://127.0.0.1:5000'
 ];
-
-if(process.env.NODE_ENV === 'development') {
-    whitelist.push('localhost');
-}
 
 var corsOptions = {
     
     origin: function (origin, callback) {
-        if(!origin) {
-            console.log('* no origin')
-            return callback(null, true);
+        if(!origin) return callback(null, true);
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            try {
+                callback(new Error('Not allowed by CORS'));
+            } catch(err) {
+                console.log(err);
+            }
         }
-        console.log('origin: ', origin);
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
     }
 }
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(function(req, res, next) {
     console.log(req.headers);
@@ -42,15 +46,6 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-})
 
-app.post('/new_message', (req, res) => {
-    console.log(req.headers['Access-Control-Allow-Origin']);
-    console.log(req.body);
-    console.log('posting...');
-    res.send('done');
-})
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
