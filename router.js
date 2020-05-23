@@ -1,9 +1,26 @@
+var dns = require('dns');
+var url = require('url');
+var checkEmail = function(email) {
+    let emailUrl, host;
+    try {
+        emailUrl = new URL(email);
+        host = emailUrl.hostname;
+    } catch(error) {
+        return false;
+    }
+
+    dns.lookup(host, (err, address, family) => {
+        
+    })
+}
+
 module.exports = function(app, Model) {
     app.get('/', (req, res) => {
         res.sendFile(__dirname + '/index.html');
     })
     
     app.post('/new_message', (req, res) => {
+        
         var message = new Model({
             name: req.body.name,
             email: req.body.email,
@@ -12,9 +29,9 @@ module.exports = function(app, Model) {
 
         message.save((err, data) => {
             if(err) {
-                res.send("Couldn't send your message");
+                res.json({result: "failure"});
             } else {
-                res.send("success")
+                res.json({result: "success"})
             }
         })
     });

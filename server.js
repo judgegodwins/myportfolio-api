@@ -10,8 +10,10 @@ const PORT = process.env.PORT || 5000;
 var MessageModel = require('./Message');
 var router = require('./router');
 
+
 mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true}, (err, db) => {
     if(!err) console.log('connected');
+    console.log(err)
     router(app, MessageModel);
 });
 
