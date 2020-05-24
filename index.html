@@ -19,7 +19,7 @@
     <button class="test">Test</button>
     <script>
         document.querySelector('.test').addEventListener('click', function(e) {
-            fetch(`${window.location.or}/new_message`, {
+            fetch(`${window.location.origin}/new_message`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
