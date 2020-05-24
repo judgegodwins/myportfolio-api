@@ -15,11 +15,11 @@
 
         <textarea type="text" id="msg" name="message" placeholder="Message" required></textarea>
         <button class="submit" type="submit">Send Now <i class="fas fa-arrow-right"></i></button>
-        <button class="test">Test</button>
     </form>
+    <button class="test">Test</button>
     <script>
         document.querySelector('.test').addEventListener('click', function(e) {
-            fetch(`${window.location.origin}/new_message`, {
+            fetch(`${window.location.or}/new_message`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
