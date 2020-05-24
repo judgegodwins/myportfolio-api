@@ -15,6 +15,30 @@
 
         <textarea type="text" id="msg" name="message" placeholder="Message" required></textarea>
         <button class="submit" type="submit">Send Now <i class="fas fa-arrow-right"></i></button>
+        <button class="test">Test</button>
     </form>
+    <script>
+        document.querySelector('.test').addEventListener('click', function(e) {
+            fetch(`${window.location.origin}/new_message`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: 'judge@example.com',
+                    name: 'Judge Clone',
+                    message: 'Hi judge, testing thru fetch'
+                })
+            }).then(data => data.json())
+                .then(res => {
+                    result.classList.remove('close');
+                    console.log(res);
+                    if(res.result === 'success') {
+                        console.log(res);
+                    }
+                })
+            })
+    </script>
 </body>
 </html>
