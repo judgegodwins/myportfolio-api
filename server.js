@@ -17,28 +17,8 @@ mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: tru
     router(app, MessageModel);
 });
 
-var whitelist = [
-    'https://judgegodwins.github.io', 
-    'https://judgeportfolio.herokuapp.com', 
-    'http://127.0.0.1:5000'
-];
 
-var corsOptions = {
-    
-    origin: function (origin, callback) {
-        if(!origin) return callback(null, true);
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            try {
-                callback(new Error('Not allowed by CORS'));
-            } catch(err) {
-                console.log(err);
-            }
-        }
-    }
-}
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(function(req, res, next) {
     console.log(req.headers);
