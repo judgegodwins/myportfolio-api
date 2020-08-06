@@ -20,10 +20,10 @@ mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: tru
 
 app.use(cors());
 
-app.use(function(req, res, next) {
-    console.log(req.headers);
-    next();
-})
+// app.use(function(req, res, next) {
+//     console.log(req.headers);
+//     next();
+// })
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
