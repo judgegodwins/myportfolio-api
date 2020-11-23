@@ -4,33 +4,42 @@ const sendMail = require('../utils/sendmail');
 
 router.post('/new', (req, res) => {
 
-  console.log(req.body)
-  const { email, name, message, phone_number } = req.body;
+  try {
+    const { email, name, message, phone_number } = req.body;
 
-  var messageObject = new Message({ name, email, message, phone_number });
+    var messageObject = new Message({ name, email, message, phone_number });
 
-  messageObject.save()
-    .then(data => {
-      console.log('saved: ', data);
-      console.log('about to send')
-      sendMail({
-        from: 'Judge Godwins <judgegodwins@gmail.com>',
-        to: email,
-        subject: 'Thanks for reaching out',
-        text: `Hello ${name}, thanks for reaching out to me. I'll get back to you shortly.`
+    messageObject.save()
+      .then(data => {
+
+        sendMail({
+          from: 'Judge Godwins <judgegodwins@gmail.com>',
+          to: email,
+          subject: 'Thanks for reaching out',
+          text: `Hello ${name}, thanks for reaching out to me. I'll get back to you shortly.`
+        })
+        .then(response => {
+          res.json({success: true})
+        })
+        .catch(response => res.json({ success: true }))
+        
       })
-      .then(response => {
-        res.json({success: true})
-      })
-      .catch(response => res.json({ success: true }))
-    })
-    .catch(error => res.json({success: false}))
+      .catch(error => res.json({success: false, cause: 'Server Error'}))
+
+  } catch(error) {
+    res.json({ success: false, cause: 'Server Error' })
+  }
+  
 });
 
 router.get('/all', (req, res) => {
-  Message.find({}, (err, data) => {
-    res.send(data);
-  })
+  try {
+    Message.find({}, (err, data) => {
+      res.send(data);
+    })
+  } catch(error) {
+    res.json({ success: false, cause: 'Server Error' })
+  }
 })
 
 module.exports = router;
