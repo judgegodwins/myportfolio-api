@@ -1,10 +1,14 @@
-const { MAILGUN_API_KEY, EMAIL_DOMAIN } = process.env;
+const Mailgun = require("mailgun.js");
+const formData = require('form-data');
 
-const mailgun = require('mailgun-js')({
-  apiKey: MAILGUN_API_KEY,
-  domain: EMAIL_DOMAIN
-});
+const mailgun = new Mailgun(formData);
 
-module.exports = data => {
-  return mailgun.messages().send(data);
+const mg = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY || '' });
+
+export default (data) => {
+  if (!process.env.MAILGUN_DOMAIN) {
+    return Promise.reject(new Error('Mailgun domain not set'))
+  }
+
+  return mg.messages.create(process.env.MAILGUN_DOMAIN, data)
 }
