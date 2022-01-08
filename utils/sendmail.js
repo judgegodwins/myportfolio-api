@@ -5,7 +5,7 @@ const mailgun = new Mailgun(formData);
 
 const mg = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY || '' });
 
-export default (data) => {
+module.exports = (data) => {
   if (!process.env.MAILGUN_DOMAIN) {
     return Promise.reject(new Error('Mailgun domain not set'))
   }
